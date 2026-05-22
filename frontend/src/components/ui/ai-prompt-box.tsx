@@ -10,7 +10,7 @@ interface PromptInputBoxProps {
   className?: string;
 }
 
-export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref: React.Ref<HTMLDivElement>) => {
+export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref: React.Ref<HTMLFormElement>) => {
   const { onSend = () => {}, isLoading = false, placeholder = "Message AvanGuard...", className } = props;
   const [input, setInput] = React.useState("");
 
@@ -22,38 +22,29 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
   const hasContent = input.trim() !== "";
 
   return (
-    <div
+    <form
       ref={ref}
+      onSubmit={handleSubmit}
       className={cn(
-        "flex w-full items-center gap-2 rounded-2xl bg-[#2F2F2F] px-4 py-2 ring-1 ring-[#424242] focus-within:ring-gray-400 transition-all",
+        "flex w-full items-center gap-2 rounded-full bg-[#2F2F2F] pr-2 pl-4 py-2 ring-1 ring-[#424242] focus-within:ring-gray-400 transition-all",
         className
       )}
     >
-      <textarea
+      <input
+        type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
         disabled={isLoading}
         placeholder={placeholder}
-        rows={1}
-        className="w-full resize-none bg-transparent text-gray-200 placeholder-gray-400 focus:outline-none min-h-[24px] max-h-[200px] py-2 scrollbar-thin overflow-y-auto"
-        style={{ height: "auto" }}
+        className="w-full bg-transparent text-gray-200 placeholder-gray-400 focus:outline-none py-2"
       />
 
       <button
-        type="button"
+        type="submit"
         disabled={isLoading || !hasContent}
-        onClick={handleSubmit}
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors",
           hasContent && !isLoading
@@ -68,7 +59,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
           <ArrowUp className="h-4 w-4" />
         )}
       </button>
-    </div>
+    </form>
   );
 });
 
