@@ -16,8 +16,6 @@ const STEP_LABELS: Record<string, string> = {
 };
 
 export default function PipelineAuditTrail({ logs }: { logs: PipelineLog[] }) {
-  const [expanded, setExpanded] = useState(false);
-
   if (!logs || logs.length === 0) return null;
 
   const passed = logs.filter(l => l.status === "pass").length;
@@ -25,6 +23,9 @@ export default function PipelineAuditTrail({ logs }: { logs: PipelineLog[] }) {
   
   // Overall status based on logs
   const isFailed = failed > 0;
+  
+  // Auto-expand if failed
+  const [expanded, setExpanded] = useState(isFailed);
 
   return (
     <div style={{ marginBottom: "0.75rem", maxWidth: "400px" }}>

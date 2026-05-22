@@ -267,6 +267,11 @@ export default function ChatPage() {
                       <Shield size={16} color="white" />
                     </div>
                     <div style={{ flex: 1 }}>
+                      {/* Security Badge / AI Thinking */}
+                      {msg.verdict && logs[msg.id] && (
+                        <PipelineAuditTrail logs={logs[msg.id]} />
+                      )}
+
                       <div style={{ 
                         background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)",
                         padding: "1.2rem", borderRadius: "8px 20px 20px 20px", fontSize: "0.95rem", lineHeight: 1.6,
@@ -274,11 +279,6 @@ export default function ChatPage() {
                       }}>
                         {msg.content}
                       </div>
-
-                      {/* Security Badge */}
-                      {msg.verdict && logs[msg.id] && (
-                        <PipelineAuditTrail logs={logs[msg.id]} />
-                      )}
                     </div>
                   </div>
                 )}
