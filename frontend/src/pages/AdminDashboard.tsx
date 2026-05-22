@@ -56,6 +56,15 @@ export default function AdminDashboard() {
   
   groupedLogs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
+  const STAT_CARDS = [
+    { key: "total_conversations", label: "Conversations", icon: <LayoutDashboard />, color: "#6366f1" },
+    { key: "total_messages", label: "Total Messages", icon: <MessageSquare />, color: "#38bdf8" },
+    { key: "injection_blocked", label: "Injections Blocked", icon: <ShieldAlert />, color: "#ef4444" },
+    { key: "pii_detected", label: "PII Detected", icon: <EyeOff />, color: "#f59e0b" },
+    { key: "policy_violations", label: "Policy Violations", icon: <XCircle />, color: "#8b5cf6" },
+    { key: "avg_response_ms", label: "Avg Response", icon: <Zap />, color: "#10b981", suffix: "ms" },
+  ];
+
   if (loading) return <div style={{ minHeight: "100vh", background: "#050810", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>;
 
   return (
