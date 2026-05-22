@@ -20,7 +20,15 @@ def run_migrations():
     conn.autocommit = True
     cur = conn.cursor()
 
-    print("🔧 Creating tables...")
+    print("🗑️ Dropping old v1 tables to ensure clean v2 schema...")
+    cur.execute("""
+        DROP TABLE IF EXISTS 
+            tickets, orders, pipeline_logs, business_rules, 
+            injection_rules, messages, conversations, admin_users 
+        CASCADE;
+    """)
+
+    print("🔧 Creating v2 tables...")
 
     # Conversations
     cur.execute("""
