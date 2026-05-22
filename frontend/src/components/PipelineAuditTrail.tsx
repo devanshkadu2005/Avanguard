@@ -85,7 +85,7 @@ export default function PipelineAuditTrail({ logs }: { logs: PipelineLog[] }) {
                     </span>
                   </div>
 
-                  {log.details?.thinking && (
+                  {log.details && typeof log.details.thinking === 'string' && (
                     <div style={{ 
                       marginTop: "0.4rem", marginLeft: "1.4rem", padding: "0.5rem 0.75rem", 
                       background: "rgba(255,255,255,0.02)", borderRadius: "6px", 
