@@ -1,0 +1,8 @@
+fastapi
+python-dotenv
+pydantic
+httpx
+openai
+psycopg2-binary
+pyjwt
+bcrypt
