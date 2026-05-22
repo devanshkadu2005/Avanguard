@@ -203,6 +203,16 @@ def admin_login(body: LoginBody):
     return {"token": token, "username": body.username}
 
 
+@app.get("/api/admin/setup")
+def run_setup():
+    try:
+        from db.migrations import run_migrations
+        run_migrations()
+        return {"status": "success", "message": "Database migrations applied successfully"}
+    except Exception as e:
+        import traceback
+        raise HTTPException(500, f"Migration failed: {str(e)}\n{traceback.format_exc()}")
+
 @app.get("/api/admin/dashboard")
 def admin_dashboard(admin=Depends(get_admin)):
     with get_db() as cur:
