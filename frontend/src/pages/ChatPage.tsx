@@ -172,7 +172,7 @@ export default function ChatPage() {
             }}
           >
             <div style={{ padding: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#6366f1,#38bdf8)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: "#2F2F2F", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Shield size={16} color="white" />
               </div>
               <span style={{ fontWeight: 700, fontSize: "1.2rem", letterSpacing: "-0.5px" }}>AvanGuard</span>
@@ -202,7 +202,7 @@ export default function ChatPage() {
                   onClick={() => { setActiveConvId(c.id); if(window.innerWidth < 768) setSidebarOpen(false); }}
                   style={{
                     width: "100%", textAlign: "left", padding: "0.75rem 1rem", borderRadius: "8px", border: "none",
-                    background: activeConvId === c.id ? "rgba(99,102,241,0.15)" : "transparent",
+                    background: activeConvId === c.id ? "rgba(255,255,255,0.1)" : "transparent",
                     color: activeConvId === c.id ? "#fff" : "rgba(255,255,255,0.7)",
                     cursor: "pointer", display: "flex", alignItems: "center", gap: "0.75rem",
                     transition: "all 0.2s"
@@ -210,7 +210,6 @@ export default function ChatPage() {
                   onMouseEnter={e => { if(activeConvId !== c.id) e.currentTarget.style.background = "rgba(255,255,255,0.05)" }}
                   onMouseLeave={e => { if(activeConvId !== c.id) e.currentTarget.style.background = "transparent" }}
                 >
-                  <MessageSquare size={16} style={{ color: activeConvId === c.id ? "#6366f1" : "inherit" }} />
                   <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: "0.85rem", fontWeight: activeConvId === c.id ? 600 : 400 }}>
                     {c.title || "New Chat"}
                   </span>
@@ -246,7 +245,7 @@ export default function ChatPage() {
             
             {!activeConvId && messages.length === 0 && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center", marginTop: "10vh" }}>
-                <div style={{ width: 64, height: 64, borderRadius: 16, background: "linear-gradient(135deg,#6366f1,#38bdf8)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem", boxShadow: "0 8px 32px rgba(99,102,241,0.3)" }}>
+                <div style={{ width: 64, height: 64, borderRadius: 16, background: "#2F2F2F", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
                   <Shield size={32} color="white" />
                 </div>
                 <h2 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>How can I help you today?</h2>
@@ -259,9 +258,9 @@ export default function ChatPage() {
                 {msg.role === "user" ? (
                   <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
                     <div style={{ 
-                      background: "linear-gradient(135deg, #4f46e5, #6366f1)", padding: "1rem 1.2rem",
-                      borderRadius: "20px 20px 4px 20px", maxWidth: "80%", fontSize: "0.95rem", lineHeight: 1.5,
-                      boxShadow: "0 4px 20px rgba(99,102,241,0.2)"
+                      background: "#2F2F2F", padding: "0.75rem 1rem",
+                      borderRadius: "16px 16px 4px 16px", maxWidth: "80%", fontSize: "0.95rem", lineHeight: 1.5,
+                      color: "#E5E5E5"
                     }}>
                       {msg.content}
                     </div>
