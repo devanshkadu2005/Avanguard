@@ -142,15 +142,6 @@ export default function ChatPage() {
     }
   };
 
-  const toggleAudit = (msgId: string) => {
-    setExpandedAudit(prev => {
-      const next = new Set(prev);
-      if (next.has(msgId)) next.delete(msgId);
-      else next.add(msgId);
-      return next;
-    });
-  };
-
   const getVerdictStyle = (verdict?: string) => {
     switch(verdict) {
       case "PASS": return { color: "#10b981", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.3)" };
@@ -285,32 +276,8 @@ export default function ChatPage() {
                       </div>
 
                       {/* Security Badge */}
-                      {msg.verdict && (
-                        <div>
-                          <button 
-                            onClick={() => toggleAudit(msg.id)}
-                            style={{ 
-                              background: getVerdictStyle(msg.verdict).bg,
-                              border: `1px solid ${getVerdictStyle(msg.verdict).border}`,
-                              color: getVerdictStyle(msg.verdict).color,
-                              padding: "0.25rem 0.75rem", borderRadius: "16px",
-                              fontSize: "0.75rem", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "0.4rem",
-                              cursor: "pointer", transition: "all 0.2s"
-                            }}
-                          >
-                            <Shield size={12} />
-                            {msg.verdict} CHECK
-                          </button>
-                          
-                          {/* Pipeline Audit Expandable */}
-                          <AnimatePresence>
-                            {expandedAudit.has(msg.id) && logs[msg.id] && (
-                              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden", marginTop: "0.5rem" }}>
-                                <PipelineAuditTrail logs={logs[msg.id]} />
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
+                      {msg.verdict && logs[msg.id] && (
+                        <PipelineAuditTrail logs={logs[msg.id]} />
                       )}
                     </div>
                   </div>
