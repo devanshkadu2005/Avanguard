@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, ShieldAlert, Zap, LogOut, Database, EyeOff, LayoutDashboard, MessageSquare, XCircle, Search } from "lucide-react";
-import { getDashboard, getAdminLogs, getAdminWsUrl, DashboardStats, PipelineLog } from "@/lib/api";
+import { getDashboard, getAdminLogs, getAdminWsUrl } from "@/lib/api";
+import type { DashboardStats, PipelineLog } from "@/lib/api";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);

@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Plus, MessageSquare, Loader2, Menu, LogIn, LayoutDashboard } from "lucide-react";
 import { PromptInputBox } from "@/components/ui/ai-prompt-box";
 import PipelineAuditTrail from "@/components/PipelineAuditTrail";
-import { sendMessage, getConversations, getConversation, createConversation, Conversation, Message, PipelineLog } from "@/lib/api";
+import { sendMessage, getConversations, getConversation, createConversation } from "@/lib/api";
+import type { Conversation, Message, PipelineLog } from "@/lib/api";
 
 export default function ChatPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);

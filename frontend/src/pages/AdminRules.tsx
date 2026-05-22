@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShieldAlert, Database, ArrowLeft, Plus, X, Save, Trash2 } from "lucide-react";
-import { getAdminRules, createAdminRule, deleteAdminRule, updateAdminRule, getAdminInjectionRules, Rule, InjectionRule } from "@/lib/api";
+import { getAdminRules, createAdminRule, deleteAdminRule, updateAdminRule, getAdminInjectionRules } from "@/lib/api";
+import type { Rule, InjectionRule } from "@/lib/api";
 
 export default function AdminRules() {
   const [activeTab, setActiveTab] = useState<"content" | "injection">("content");
