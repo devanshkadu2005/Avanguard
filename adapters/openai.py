@@ -140,9 +140,15 @@ def _extract_json_from_cot(content: str) -> dict:
         else:
             json_str = "{}"
     try:
-        return json.loads(json_str)
+        data = json.loads(json_str)
     except:
-        return {}
+        data = {}
+        
+    think_match = re.search(r'<thinking>(.*?)</thinking>', content, re.IGNORECASE | re.DOTALL)
+    if think_match:
+        data["thinking"] = think_match.group(1).strip()
+        
+    return data
 
 
 def check_output_safety(response_text: str) -> dict:
@@ -163,11 +169,11 @@ def check_output_safety(response_text: str) -> dict:
         )
         content = response.choices[0].message.content
         data = _extract_json_from_cot(content)
-        return {"is_safe": data.get("is_safe", True), "reason": data.get("reason", "")}
+        return {"is_safe": data.get("is_safe", True), "reason": data.get("reason", ""), "thinking": data.get("thinking", "")}
     except Exception as e:
         print(f"Output safety check failed: {e}")
         # Fail open — if safety check fails, allow the response but flag it
-        return {"is_safe": True, "reason": f"Safety check error: {e}"}
+        return {"is_safe": True, "reason": f"Safety check error: {e}", "thinking": ""}
 
 
 # ─── Injection detection (unchanged) ───
@@ -213,7 +219,7 @@ def analyze_injection_intent(text: str) -> dict:
         )
         content = response.choices[0].message.content
         data = _extract_json_from_cot(content)
-        return {"is_injection": data.get("is_injection", False), "regex": data.get("regex", "")}
+        return {"is_injection": data.get("is_injection", False), "regex": data.get("regex", ""), "thinking": data.get("thinking", "")}
     except Exception as e:
         print(f"Injection Analyzer failed: {e}")
-        return {"is_injection": False, "regex": ""}
+        return {"is_injection": False, "regex": "", "thinking": ""}

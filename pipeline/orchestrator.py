@@ -74,7 +74,7 @@ def process_message(conversation_id: str, user_message: str) -> dict:
         _log_step(cur, message_id, "injection", 1,
                   "pass" if inj["passed"] else "fail",
                   current_text, inj["reason"],
-                  {"details": inj.get("details", "")}, dur)
+                  {"details": inj.get("details", ""), "thinking": inj.get("thinking", "")}, dur)
 
         if not inj["passed"]:
             verdict = "WARNING" if fail_mode == "open" else "FAIL"
@@ -185,7 +185,7 @@ def process_message(conversation_id: str, user_message: str) -> dict:
         _log_step(cur, message_id, "content_safety", 4,
                   "pass" if safety_passed else "fail",
                   assistant_response[:500], "safe" if safety_passed else safety.get("reason", ""),
-                  {"is_safe": safety_passed}, dur)
+                  {"is_safe": safety_passed, "thinking": safety.get("thinking", "")}, dur)
 
         # ── Step 5: Content Rules Check ──
         t0 = time.time()
@@ -219,7 +219,8 @@ def process_message(conversation_id: str, user_message: str) -> dict:
                 safety_passed = safety.get("is_safe", True)
                 steps_result["content_safety"] = {
                     "passed": safety_passed,
-                    "reason": safety.get("reason", "") if not safety_passed else "Output safety check passed."
+                    "reason": safety.get("reason", "") if not safety_passed else "Output safety check passed.",
+                    "thinking": safety.get("thinking", "")
                 }
                 rules_result = check_content_rules(assistant_response)
                 steps_result["content_rules"] = rules_result

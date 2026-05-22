@@ -64,25 +64,37 @@ export default function PipelineAuditTrail({ logs }: { logs: PipelineLog[] }) {
             }}>
               {logs.map((log, i) => (
                 <div key={log.id || i} style={{ 
-                  display: "flex", alignItems: "center", gap: "0.5rem", 
                   padding: "0.4rem 0.5rem", fontSize: "0.75rem",
                   borderBottom: i < logs.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none"
                 }}>
-                  {log.status === "pass" ? (
-                    <CheckCircle2 size={14} color="#10b981" />
-                  ) : log.status === "fail" || log.status === "flag" ? (
-                    <XCircle size={14} color="#ef4444" />
-                  ) : (
-                    <div style={{ width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    {log.status === "pass" ? (
+                      <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+                    ) : log.status === "fail" || log.status === "flag" ? (
+                      <XCircle size={14} color="#ef4444" style={{ flexShrink: 0 }} />
+                    ) : (
+                      <div style={{ width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)", flexShrink: 0 }} />
+                    )}
+                    
+                    <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500, width: "100px", flexShrink: 0 }}>
+                      {STEP_LABELS[log.step_name] || log.step_name}
+                    </span>
+                    
+                    <span style={{ color: "rgba(255,255,255,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
+                      {log.output_text || log.status.toUpperCase()}
+                    </span>
+                  </div>
+
+                  {log.details?.thinking && (
+                    <div style={{ 
+                      marginTop: "0.4rem", marginLeft: "1.4rem", padding: "0.5rem 0.75rem", 
+                      background: "rgba(255,255,255,0.02)", borderRadius: "6px", 
+                      fontStyle: "italic", fontSize: "0.7rem", color: "rgba(255,255,255,0.5)",
+                      borderLeft: "2px solid rgba(255,255,255,0.1)"
+                    }}>
+                      {log.details.thinking}
+                    </div>
                   )}
-                  
-                  <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500, width: "100px" }}>
-                    {STEP_LABELS[log.step_name] || log.step_name}
-                  </span>
-                  
-                  <span style={{ color: "rgba(255,255,255,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
-                    {log.output_text || log.status.toUpperCase()}
-                  </span>
                 </div>
               ))}
             </div>

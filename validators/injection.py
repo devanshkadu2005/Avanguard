@@ -57,8 +57,9 @@ def check_injection(text: str) -> dict:
                 "passed": False,
                 "reason": "Prompt injection detected (AI judge).",
                 "details": f"AI-generated regex: {new_regex}" if new_regex else "Flagged by AI",
+                "thinking": result.get("thinking", "")
             }
     except Exception as e:
         print(f"[injection] LLM judge error: {e}")
 
-    return {"passed": True, "reason": "No injection detected.", "details": ""}
+    return {"passed": True, "reason": "No injection detected.", "details": "", "thinking": ""}
