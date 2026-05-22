@@ -6,11 +6,9 @@ from contextlib import contextmanager
 
 load_dotenv()
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "")
-if DATABASE_URL.endswith("?sslmode"):
-    DATABASE_URL = DATABASE_URL.replace("?sslmode", "")
-elif "?sslmode&" in DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.replace("?sslmode&", "?")
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+if "?sslmode" in DATABASE_URL and "sslmode=require" not in DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace("?sslmode", "?sslmode=require")
 
 def get_connection():
     """Get a PostgreSQL connection with dict cursor."""
