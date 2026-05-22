@@ -121,6 +121,11 @@ export default function ChatPage() {
         [res.message_id]: res.pipeline_logs
       }));
 
+      // Auto-expand the security checks if it failed or requires review
+      if (res.verdict !== "PASS") {
+        setExpandedAudit(prev => new Set(prev).add(res.message_id));
+      }
+
     } catch (e) {
       console.error(e);
       setMessages(prev => [...prev, {
@@ -321,11 +326,12 @@ export default function ChatPage() {
                 <div style={{ 
                   background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)",
                   padding: "1rem 1.2rem", borderRadius: "8px 20px 20px 20px",
-                  display: "flex", alignItems: "center", gap: "4px"
+                  display: "flex", alignItems: "center", gap: "0.5rem"
                 }}>
-                  <div className="typing-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: "white" }} />
-                  <div className="typing-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: "white" }} />
-                  <div className="typing-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: "white" }} />
+                  <Loader2 size={14} className="animate-spin" style={{ color: "rgba(255,255,255,0.5)" }} />
+                  <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "rgba(255,255,255,0.6)" }}>
+                    Running Security Checks...
+                  </span>
                 </div>
               </motion.div>
             )}

@@ -44,7 +44,7 @@ export default function LandingPage() {
           <span style={{ fontSize: "1.2rem", fontWeight: 700, background: "linear-gradient(135deg,#a5b4fc,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AvanGuard</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
-          <Link to="/portal" style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.45)", textDecoration: "none", fontWeight: 500 }}>User Portal</Link>
+          <Link to="/chat" style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.45)", textDecoration: "none", fontWeight: 500 }}>Start Chat</Link>
           <Link to="/admin/login" style={{
             fontSize: "0.85rem", padding: "0.4rem 1rem", borderRadius: "8px",
             background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)",

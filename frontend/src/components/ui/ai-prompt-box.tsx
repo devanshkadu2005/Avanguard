@@ -29,7 +29,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
       ref={ref}
       onSubmit={handleSubmit}
       className={cn(
-        "flex w-full items-center gap-2 rounded-full bg-[#2F2F2F] pr-2 pl-4 py-2 ring-1 ring-[#424242] focus-within:ring-gray-400 transition-all",
+        "flex w-full items-center gap-2 rounded-lg bg-[#2F2F2F] px-4 py-1.5 ring-1 ring-[#424242] focus-within:ring-gray-400 transition-all",
         className
       )}
     >
@@ -39,7 +39,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
         onChange={(e) => setInput(e.target.value)}
         disabled={isLoading}
         placeholder={placeholder}
-        className="w-full bg-transparent text-gray-200 placeholder-gray-400 focus:outline-none py-2"
+        className="w-full bg-transparent text-gray-200 placeholder-gray-400 focus:outline-none py-2 text-sm overflow-hidden text-ellipsis"
       />
 
       <button
