@@ -1,45 +1,93 @@
-import { CheckCircle2, XCircle } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Brain, ChevronDown, ChevronRight, CheckCircle2, XCircle } from "lucide-react";
 import type { PipelineLog } from "@/lib/api";
 
 const STEP_LABELS: Record<string, string> = {
-  injection: "Injection",
-  pii: "PII",
-  llm: "LLM",
-  retry_llm: "Retry",
-  schema: "Schema",
-  rules: "Rules",
-  content_safety: "Safety",
-  content_rules: "Policies",
-  decision: "Decision",
+  injection: "Injection Check",
+  pii: "PII Redaction",
+  llm: "LLM Analysis",
+  retry_llm: "LLM Retry",
+  schema: "Output Safety",
+  rules: "Content Rules",
+  content_safety: "Output Safety",
+  content_rules: "Content Policies",
+  decision: "Final Decision",
 };
 
 export default function PipelineAuditTrail({ logs }: { logs: PipelineLog[] }) {
+  const [expanded, setExpanded] = useState(false);
+
   if (!logs || logs.length === 0) return null;
 
-  const passed = logs.filter(l => l.status === "pass").map(l => STEP_LABELS[l.step_name] || l.step_name);
-  const failed = logs.filter(l => l.status === "fail" || l.status === "flag").map(l => STEP_LABELS[l.step_name] || l.step_name);
+  const passed = logs.filter(l => l.status === "pass").length;
+  const failed = logs.filter(l => l.status === "fail" || l.status === "flag").length;
+  
+  // Overall status based on logs
+  const isFailed = failed > 0;
 
   return (
-    <div style={{
-      fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", marginTop: "0.5rem",
-      display: "flex", gap: "1rem", flexWrap: "wrap",
-      background: "rgba(255,255,255,0.02)", padding: "0.6rem 0.8rem", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)"
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-        <span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Security Checks:</span>
-      </div>
-      
-      {passed.length > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "#10b981" }}>
-          <CheckCircle2 size={14} /> <span style={{ color: "rgba(255,255,255,0.5)" }}>Passed: {passed.join(", ")}</span>
-        </div>
-      )}
-      
-      {failed.length > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "#ef4444" }}>
-          <XCircle size={14} /> <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500 }}>Failed: {failed.join(", ")}</span>
-        </div>
-      )}
+    <div style={{ marginBottom: "0.75rem", maxWidth: "400px" }}>
+      <button 
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          display: "flex", alignItems: "center", gap: "0.5rem",
+          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+          padding: "0.4rem 0.75rem", borderRadius: "16px", cursor: "pointer",
+          color: "rgba(255,255,255,0.7)", fontSize: "0.75rem", fontWeight: 600,
+          transition: "background 0.2s"
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
+        onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+      >
+        <Brain size={14} style={{ color: isFailed ? "#ef4444" : "#a5b4fc" }} />
+        {isFailed ? "Security Checks Failed" : "AI Thinking Process"}
+        <span style={{ color: "rgba(255,255,255,0.3)" }}>
+          ({passed} passed{failed > 0 ? `, ${failed} failed` : ""})
+        </span>
+        {expanded ? <ChevronDown size={14} style={{ marginLeft: "auto" }} /> : <ChevronRight size={14} style={{ marginLeft: "auto" }} />}
+      </button>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }} 
+            animate={{ height: "auto", opacity: 1 }} 
+            exit={{ height: 0, opacity: 0 }}
+            style={{ overflow: "hidden" }}
+          >
+            <div style={{ 
+              marginTop: "0.5rem", background: "rgba(0,0,0,0.2)", 
+              border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px",
+              padding: "0.5rem"
+            }}>
+              {logs.map((log, i) => (
+                <div key={log.id || i} style={{ 
+                  display: "flex", alignItems: "center", gap: "0.5rem", 
+                  padding: "0.4rem 0.5rem", fontSize: "0.75rem",
+                  borderBottom: i < logs.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none"
+                }}>
+                  {log.status === "pass" ? (
+                    <CheckCircle2 size={14} color="#10b981" />
+                  ) : log.status === "fail" || log.status === "flag" ? (
+                    <XCircle size={14} color="#ef4444" />
+                  ) : (
+                    <div style={{ width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)" }} />
+                  )}
+                  
+                  <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500, width: "100px" }}>
+                    {STEP_LABELS[log.step_name] || log.step_name}
+                  </span>
+                  
+                  <span style={{ color: "rgba(255,255,255,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
+                    {log.output_text || log.status.toUpperCase()}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
