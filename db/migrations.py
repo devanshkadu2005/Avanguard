@@ -11,6 +11,10 @@ load_dotenv()
 
 # Use direct URL for migrations (not pooled)
 DIRECT_URL = os.environ.get("DIRECT_URL", os.environ.get("DATABASE_URL", ""))
+if DIRECT_URL.endswith("?sslmode"):
+    DIRECT_URL = DIRECT_URL.replace("?sslmode", "")
+elif "?sslmode&" in DIRECT_URL:
+    DIRECT_URL = DIRECT_URL.replace("?sslmode&", "?")
 
 def run_migrations():
     import psycopg2
